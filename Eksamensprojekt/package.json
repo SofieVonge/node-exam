@@ -1,0 +1,28 @@
+{
+  "name": "eksamensprojekt",
+  "version": "1.0.0",
+  "description": "An exam project for NodeJS 2020 about expenses in a household.",
+  "main": "app.js",
+  "scripts": {
+    "migrate:latest": "knex migrate:latest",
+    "migrate:make": "knex migrate:make",
+    "migrate:rollback": "knex migrate:rollback",
+    "seed:make": "knex seed:make",
+    "seed:run": "knex seed:run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "expenses",
+    "personal",
+    "finances",
+    "household"
+  ],
+  "author": "Sofie Vonge Jensen",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.21.1",
+    "mysql": "^2.18.1",
+    "objection": "^2.1.3"
+  }
+}
