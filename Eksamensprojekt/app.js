@@ -10,36 +10,66 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static('public'));
 
 
-// setting up the ORM
+// setting up the ORM and Knex for migration
 const { Model } = require("objection");
-
-// the library Knex
 const Knex = require("knex");
 
-// the config file for the connection
+// setting up the connection based on a config file
 const knexfile = require("./knexfile.js");
-
-// the connection knex, based on the config file
 const knex = Knex(knexfile.development);
 
 // connecting the models to the db
 Model.knex(knex);
 
+// setting up session
+const session = require("express-session");
+const config = require("./config/config.json");
 
+app.use(session({
+    secret: config.sessionSecret,
+    resave: false,
+    saveUninitialized: true,
+}));
+
+
+// setting up rate limit for security
+const rateLimit = require("express-rate-limit");
+
+// a general limiter
+const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+});
+
+app.use(generalLimiter);
+
+// a auth limiter used for auth routes
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 4
+});
+
+/* TODO: set the correct routes for the auth limiter!
+app.use("/", authLimiter);
+app.use("/", authLimiter);
+*/
+
+// setting up middleware
+/*app.use((req, res, next) => {
+    //TODO: write middleware, maybe move based on the other routes!
+    next();
+});*/
+
+
+// making sandwich files to use to SSR
 const fs = require("fs");
 
 const navbar = fs.readFileSync("./public/navbar/navbar.html", "utf8");
 const footer = fs.readFileSync("./public/footer/footer.html", "utf8");
 
-const frontpage = fs.readFileSync("./public/frontpage/frontpage.html", "utf8");
-
+// setting up routes
 app.get("/", (req, res) => {
     return res.sendFile(__dirname + "/public/frontpage/frontpage.html");
-   //return res.send(navbar + frontpage + footer);
-});
-
-app.get("/ny", (req, res) => {
-    return res.send({response: "noget"});
 });
 
 
