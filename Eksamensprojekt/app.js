@@ -61,6 +61,20 @@ app.use("/", authLimiter);
 });*/
 
 
+// setting up routers
+const authRoutes = require("./routes/auth.js");
+app.use(authRoutes);
+
+const expenseRoutes = require("./routes/expense.js");
+app.use(expenseRoutes);
+
+const summaryRoutes = require("./routes/summary.js");
+app.use(summaryRoutes);
+
+const userRoutes = require("./routes/user.js");
+app.use(userRoutes);
+
+
 // making sandwich files to use to SSR
 const fs = require("fs");
 
