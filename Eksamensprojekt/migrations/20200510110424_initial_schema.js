@@ -8,7 +8,24 @@ exports.up = function(knex) {
         table.dateTime("updated_at").defaultTo(knex.raw("NULL ON UPDATE CURRENT_TIMESTAMP"));
         table.dateTime("created_at").defaultTo(knex.fn.now());
    })
-   .createTable("expenses", table => {
+   .createTable("households", table => {
+        table.increments("id");
+        table.string("name").notNullable();
+        table.integer("member_count").notNullable();
+        table.dateTime("updated_at").defaultTo(knex.raw("NULL ON UPDATE CURRENT_TIMESTAMP"));
+        table.dateTime("created_at").defaultTo(knex.fn.now());
+
+        table.integer("owner_id").unsigned().notNullable();
+        // mapping the foreign key from the other table
+        table.foreign("owner_id").references("users.id");
+    })
+    .createTable("households_users", table => {
+        table.integer("household_id").unsigned().notNullable();
+        table.foreign("household_id").references("households.id");
+        table.integer("user_id").unsigned().notNullable().unique();
+        table.foreign("user_id").references("users.id");
+    })
+    .createTable("expenses", table => {
        table.increments("id");
        table.string("name").notNullable();
        table.float("amount").notNullable();
@@ -45,5 +62,7 @@ exports.down = function(knex) {
     .dropTableIfExists("summaries_expenses")
     .dropTableIfExists("summaries")
     .dropTableIfExists("expenses")
+    .dropTableIfExists("households_users")
+    .dropTableIfExists("households")
     .dropTableIfExists("users");
 };
