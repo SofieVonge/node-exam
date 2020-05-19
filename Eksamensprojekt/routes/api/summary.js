@@ -18,17 +18,18 @@ router.get("/summaries", async (req, res) => {
 // get details (the expenses) about a summary based on the summaryId
 router.get("/summaries/:id", async (req, res) => {
     const id = req.params.id;
+    const householdId = req.session.householdId;
 
     try {
         //ingen af disse virker!
-       // const summary = await Summary.query().withGraphFetched("expenses").where("summaries.id", id); // dette svarer måske til en join af de to tabeller?? 
+       // const summary = await Summary.query().withGraphFetched("expenses").where("id", id); // dette svarer måske til en join af de to tabeller?? 
         // ide hvis overstående ikke virker : const summary = await Summary.query().findById(id).whereExists(Summary.relatedQuery("expenses"));
        // const summary = await Summary.query().findById(id).withGraphFetched("expenses");
         return res.send({response: summary});
 
 
     } catch(error) {
-        return res.send({response: "Error with DB:", error});
+        return res.send({response: "Error with DB:" + error});
     }
 });
 
