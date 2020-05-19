@@ -12,8 +12,8 @@ class Expense extends Model {
             relationMappings: Model.BelongsToOneRelation,
             modelClass: User,
             join: {
-                from: expenses.userId,
-                to: users.id
+                from: "expenses.userId",
+                to: "users.id"
             }
         },
 

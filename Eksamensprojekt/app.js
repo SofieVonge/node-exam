@@ -62,16 +62,16 @@ app.use("/", authLimiter);
 
 
 // setting up routers
-const authRoutes = require("./api/routes/auth.js");
+const authRoutes = require("./routes/api/auth.js");
 app.use(authRoutes);
 
-const expenseRoutes = require("./api/routes/expense.js");
+const expenseRoutes = require("./routes/api/expense.js");
 app.use(expenseRoutes);
 
-const summaryRoutes = require("./api/routes/summary.js");
+const summaryRoutes = require("./routes/api/summary.js");
 app.use(summaryRoutes);
 
-const userRoutes = require("./api/routes/user.js");
+const userRoutes = require("./routes/api/user.js");
 app.use(userRoutes);
 
 

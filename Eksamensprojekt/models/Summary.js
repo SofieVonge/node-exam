@@ -12,8 +12,8 @@ class Summary extends Model {
             relationMappings: Model.BelongsToOneRelation,
             modelClass: User,
             join: {
-                from: summaries.userId,
-                to: users.id
+                from: "summaries.userId",
+                to: "users.id"
             }
         },
 
