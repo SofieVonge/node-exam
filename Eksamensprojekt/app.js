@@ -81,10 +81,17 @@ const fs = require("fs");
 const navbar = fs.readFileSync("./public/navbar/navbar.html", "utf8");
 const footer = fs.readFileSync("./public/footer/footer.html", "utf8");
 
+const summary = fs.readFileSync("./public/summary/summary.html", "utf8");
+
 // setting up routes
 app.get("/", (req, res) => {
     return res.sendFile(__dirname + "/public/frontpage/frontpage.html");
 });
+
+app.get("/ny/1", (req, res) => {
+    return res.send(navbar + summary + footer);
+});
+
 
 
 // setting up the port and start to listen
