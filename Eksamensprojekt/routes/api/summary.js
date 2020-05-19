@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const Summary = require("../models/Summary.js");
+const Summary = require("../../models/Summary.js");
 
 
 router.get("/summaries", async (req, res) => {

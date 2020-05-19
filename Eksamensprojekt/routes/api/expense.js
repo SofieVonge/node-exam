@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const Expense = require("../models/Expense.js");
+const Expense = require("../../models/Expense.js");
 
 router.get("/expenses", async (req, res) => {
     const householdId = req.session.householdId;
