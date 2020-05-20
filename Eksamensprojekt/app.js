@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 
+
 // setting up parsing of json and form-data
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -20,6 +21,7 @@ const knex = Knex(knexfile.development);
 
 // connecting the models to the db
 Model.knex(knex);
+
 
 // setting up session
 const session = require("express-session");
@@ -61,42 +63,50 @@ app.use("/", authLimiter);
 });*/
 
 
-// setting up routers
-const authRoutes = require("./routes/api/auth.js");
-app.use(authRoutes);
 
-const expenseRoutes = require("./routes/api/expense.js");
-app.use(expenseRoutes);
 
-const summaryRoutes = require("./routes/api/summary.js");
-app.use(summaryRoutes);
+// setting up api routes
+const authApiRoute = require("./routes/api/auth.js");
+app.use(authApiRoute);
 
-const userRoutes = require("./routes/api/user.js");
-app.use(userRoutes);
+const expenseApiRoute = require("./routes/api/expense.js");
+app.use(expenseApiRoute);
+
+const summaryApiRoute = require("./routes/api/summary.js");
+app.use(summaryApiRoute);
+
+const userApiRoute = require("./routes/api/user.js");
+app.use(userApiRoute);
+
+
+// setting up website routes
+const authControllerRoute = require("./routes/controller/auth.js");
+app.use(authControllerRoute);
 
 
 // making sandwich files to use to SSR
 const fs = require("fs");
 
-const navbar = fs.readFileSync("./public/navbar/navbar.html", "utf8");
-const footer = fs.readFileSync("./public/footer/footer.html", "utf8");
+const navbarView = fs.readFileSync("./public/navbar/navbar_default.html", "utf8");
+const footerView = fs.readFileSync("./public/footer/footer.html", "utf8");
 
-const summary = fs.readFileSync("./public/summary/summary.html", "utf8");
+const homeView = fs.readFileSync("./public/frontpage/frontpage.html", "utf8");
+const summaryView = fs.readFileSync("./public/summary/summary.html", "utf8");
+
 
 // setting up routes
 app.get("/", (req, res) => {
-    return res.sendFile(__dirname + "/public/frontpage/frontpage.html");
+    return res.send(navbarView + homeView + footerView);
 });
 
 app.get("/ny/1", (req, res) => {
-    return res.send(navbar + summary + footer);
+    return res.send(navbarView + summaryView + footerView);
 });
 
 
 
 // setting up the port and start to listen
 const port = process.env.PORT ? process.env.PORT : 3000;
-
 const server = app.listen(port, (error) => {
     if (error)
     {
