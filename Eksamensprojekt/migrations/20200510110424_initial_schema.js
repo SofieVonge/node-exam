@@ -5,6 +5,7 @@ exports.up = function(knex) {
         table.increments("id");
         table.string("username").unique().notNullable();
         table.string("password").notNullable();
+        table.string("email").unique().notNullable();
         table.dateTime("updated_at").defaultTo(knex.raw("NULL ON UPDATE CURRENT_TIMESTAMP"));
         table.dateTime("created_at").defaultTo(knex.fn.now());
    })
