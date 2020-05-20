@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const Expense = require("../../models/Expense.js");
 
-router.get("/expenses", async (req, res) => {
+router.get("/api/expenses", async (req, res) => {
     const householdId = req.session.householdId;
 
     try {
@@ -14,7 +14,7 @@ router.get("/expenses", async (req, res) => {
     }   
 });
 
-router.get("/expenses/:id", async (req, res) => {
+router.get("/api/expenses/:id", async (req, res) => {
     const id = req.params.id;
 
     try {
@@ -26,7 +26,7 @@ router.get("/expenses/:id", async (req, res) => {
     
 });
 
-router.post("/expenses", async (req, res) => {
+router.post("/api/expenses", async (req, res) => {
     const householdId = req.session.householdId;
     const { name, amount, time, next } = req.body;
 
@@ -46,7 +46,7 @@ router.post("/expenses", async (req, res) => {
     
 });
 
-router.delete("/expenses/:id", async (req, res) => {
+router.delete("/api/expenses/:id", async (req, res) => {
     const id = req.params.id;
 
     try {
@@ -59,7 +59,7 @@ router.delete("/expenses/:id", async (req, res) => {
     
 });
 
-router.put("/expenses/:id", async (req, res) => {
+router.put("/api/expenses/:id", async (req, res) => {
     const id = req.params.id;
     const { name, amount, time, next } = req.body;
 
