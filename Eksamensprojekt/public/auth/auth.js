@@ -2,7 +2,7 @@ function signIn()
 {
     const input = {
         username: document.forms.signin.username.value.trim(),
-        password: document.forms.signin.password.value.trim(),
+        password: document.forms.signup.password.value.trim(),
     }
 
     if (input.username.length < 1 || input.password.length < 1) {
@@ -81,8 +81,8 @@ function signUp()
                 //window.location.href = "/auth/signin";
                 
                 const creationText =`<p>The account ${data.response.username} of ${data.response.household.name} was created.<br /><a href="/auth/signin">Click here to login</a></p>`;
-                $("#signup .error-message").css({color: 'blue'});
-                $("#signup .error-message").html(creationText);
+                $("#signup .error-message").parent().css({color: 'blue'});
+                $("#signup .error-message").parent().html(creationText);
                 return;
             }
 

@@ -83,9 +83,6 @@ app.use(userApiRoute);
 const authControllerRoute = require("./routes/controller/auth.js");
 app.use(authControllerRoute);
 
-const dashboardControllerRoute = require("./routes/controller/dashboard.js");
-app.use(dashboardControllerRoute);
-
 
 // making sandwich files to use to SSR
 const fs = require("fs");
