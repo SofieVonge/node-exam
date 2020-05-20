@@ -35,9 +35,10 @@ router.post("/api/auth/signup", async (req, res) =>
 
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+        // Start new transaction.
+        // All queries in this transaction will be rolled back upon exception
         const newUser = await User.transaction(async trx => {
-          // Here you can use the transaction.
-
+            // We query household on the transaction
             const newHousehold = await Household.query(trx).insertGraphAndFetch(
             {
                 name: household,
@@ -52,10 +53,11 @@ router.post("/api/auth/signup", async (req, res) =>
             },
             { allowRefs: true });
 
+            // fetch newly created user with graph( household )
             const newUser = await User.query(trx).first().withGraphFetched("household").where({id: newHousehold.owner.id});
             delete newUser.password;
       
-          // Whatever you return from the transaction callback gets returned
+          // Whatever we return from the transaction callback gets returned
           // from the `transaction` function.
           return newUser;
         });
@@ -67,8 +69,31 @@ router.post("/api/auth/signup", async (req, res) =>
       }
 });
 
-router.post("/api/auth/signin", (req, res) => {
-    return res.status(501).send({ response: "Not yet implemented" });
+router.post("/api/auth/signin", async (req, res) => {
+    const { username, password } = req.body;
+
+    // username or password missing
+    if (!(username && password)) {
+        return res.status(400).send({ response: "username or password missing" });
+    }
+
+    try
+    {
+        const user = await User.query().first().where('username', username);
+        if (user) {
+            const bcryptResult = await bcrypt.compare(password, user.password);
+            if (bcryptResult === true) {
+                req.session.userId = user.id;
+                return res.status(200).send({ response: true });
+            } else {
+                return res.status(400).send({ response: "password doesn't match" });
+            }
+        } else {
+            return res.status(400).send({ response: "username not found" });
+        }
+    } catch (ex) {
+        return res.status(500).send({ response: "something went wrong with the DB" })
+    }
 });
 
 
