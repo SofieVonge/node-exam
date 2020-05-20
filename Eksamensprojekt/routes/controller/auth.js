@@ -12,6 +12,9 @@ router.get("/auth/signup", (req, res) => {
 });
 
 router.get("/auth/signin", (req, res) => {
+    if (req.session.userId) {
+        return res.redirect("/dashboard");
+    }
     return res.send(navbarView + signinView + footerView);
 });
 
