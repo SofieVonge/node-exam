@@ -1,6 +1,6 @@
 const { Model } = require("objection");
 
-const Expense = require("./Household.js");
+const Household = require("./Household.js");
 const Expense = require("./Expense.js");
 const Summary = require("./Summary.js");
 
