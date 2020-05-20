@@ -38,7 +38,7 @@ router.post("/api/auth/signup", async (req, res) =>
         const newUser = await User.transaction(async trx => {
           // Here you can use the transaction.
 
-          const newHousehold = await Household.query(trx).insertGraphAndFetch(
+            const newHousehold = await Household.query(trx).insertGraphAndFetch(
             {
                 name: household,
                 memberCount: 1,
@@ -52,7 +52,7 @@ router.post("/api/auth/signup", async (req, res) =>
             },
             { allowRefs: true });
 
-            const newUser = newHousehold.owner;
+            const newUser = await User.query(trx).first().withGraphFetched("household").where({id: newHousehold.owner.id});
             delete newUser.password;
       
           // Whatever you return from the transaction callback gets returned
