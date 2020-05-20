@@ -1,14 +1,17 @@
 const { Model } = require("objection");
 
-const Household = require("./Household.js");
-const Expense = require("./Expense.js");
+
 
 class Summary extends Model {
     static tableName = "summaries";
 
-    static relationMappings = {
+    static get relationMappings() {
 
-        user: {
+    const Household = require("./Household.js");
+    const Expense = require("./Expense.js");
+
+return {
+    user: {
             relation: Model.BelongsToOneRelation,
             modelClass: Household,
             join: {
@@ -31,8 +34,10 @@ class Summary extends Model {
             }
 
         }
+}
 
     }
+
 }
 
 module.exports = Summary;
