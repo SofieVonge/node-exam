@@ -22,7 +22,7 @@ router.get("/summaries/:id", async (req, res) => {
 
     try {
         //ingen af disse virker!
-       // const summary = await Summary.query().withGraphFetched("expenses").where("id", id); // dette svarer måske til en join af de to tabeller?? 
+        const summary = await Summary.query().withGraphFetched("expenses").where("id", id); // dette svarer måske til en join af de to tabeller?? 
         // ide hvis overstående ikke virker : const summary = await Summary.query().findById(id).whereExists(Summary.relatedQuery("expenses"));
        // const summary = await Summary.query().findById(id).withGraphFetched("expenses");
         return res.send({response: summary});

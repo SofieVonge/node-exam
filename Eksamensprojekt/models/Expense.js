@@ -1,6 +1,6 @@
 const { Model } = require("objection");
 
-const User = require("./User.js");
+const Household = require("./Household.js");
 const Summary = require("./Summary.js");
 
 class Expense extends Model {
@@ -8,17 +8,17 @@ class Expense extends Model {
 
     static relationMappings = {
 
-        user: {
-            relationMappings: Model.BelongsToOneRelation,
-            modelClass: User,
+        household: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: Household,
             join: {
-                from: "expenses.userId",
-                to: "users.id"
+                from: "expenses.householdId",
+                to: "households.id"
             }
         },
 
         summaries: {
-            relationMappings: Model.ManyToManyRelation,
+            relation: Model.ManyToManyRelation,
             modelClass: Summary,
             join: {
                 from: "expenses.id",

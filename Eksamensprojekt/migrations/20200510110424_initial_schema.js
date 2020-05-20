@@ -35,9 +35,9 @@ exports.up = function(knex) {
        table.dateTime("updated_at").defaultTo(knex.raw("NULL ON UPDATE CURRENT_TIMESTAMP"));
        table.dateTime("created_at").defaultTo(knex.fn.now());
 
-       table.integer("user_id").unsigned().notNullable();
+       table.integer("household_id").unsigned().notNullable();
        // mapping the foreign key from the other table
-       table.foreign("user_id").references("users.id");
+       table.foreign("household_id").references("households.id");
    })
    .createTable("summaries", table => {
         table.increments("id");
@@ -45,8 +45,8 @@ exports.up = function(knex) {
         table.float("total").notNullable();
         table.dateTime("updated_at").defaultTo(knex.raw("NULL ON UPDATE CURRENT_TIMESTAMP"));
         table.dateTime("created_at").defaultTo(knex.fn.now());
-        table.integer("user_id").unsigned().notNullable();
-        table.foreign("user_id").references("users.id");
+        table.integer("household_id").unsigned().notNullable();
+        table.foreign("household_id").references("households.id");
    })
    .createTable("summaries_expenses", table => {
        // a many to many mapping table
