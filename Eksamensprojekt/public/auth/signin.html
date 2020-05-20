@@ -1,0 +1,33 @@
+
+<div class="container">
+    <h1>Sign up</h1>
+
+    <form id="signup" name="signup">
+        <div class="row">
+            <div class="col text-center">
+                <span class="error-message" style="color: brown;"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="text" name="username" class="form-control input-sm" placeholder="Username" />
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control input-sm" placeholder="Password">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="container col-xs-12 col-sm-8 col-md-4">
+                <input type="button" value="SIGN IN" class="btn btn-info btn-block" onclick="signIn();">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="auth.js"></script>
