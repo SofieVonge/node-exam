@@ -18,6 +18,13 @@ router.get("/auth/signin", (req, res) => {
     return res.send(navbarView + signinView + footerView);
 });
 
+router.get("/auth/signout", (req, res) => {
+    if (req.session.userId) {
+        delete req.session.userId;
+    }
+    return res.redirect("/auth/signin");
+});
+
 
 
 module.exports = router;
