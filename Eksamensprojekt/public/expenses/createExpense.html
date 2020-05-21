@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Create new expense</h1>
 
-    <form id="new-expense" name="new-expense">
+    <form id="new-expense" name="expense">
         <div class="row">
             <div class="col text-center">
                 <p class="error-message" style="color: brown;"></p>
@@ -19,7 +19,7 @@
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                    <input type="text" name="amount" class="form-control input-sm" placeholder="Price per month" />
+                    <input type="text" name="amount" class="form-control input-sm" placeholder="Price per bill" />
                 </div>
             </div>
         </div>
@@ -29,12 +29,12 @@
                 <div class="form-group">
                     <label for="select">Select interval:</label>
                     <select class="form-control" id="select" name="time">
-                      <option>Monthly</option>
-                      <option>Every other month</option>
-                      <option>Every third month</option>
-                      <option>Quarterly</option>
-                      <option>Semiannually</option>
-                      <option>Annually</option>
+                      <option value="1">Monthly</option>
+                      <option value="2">Every other month</option>
+                      <option value="3">Every third month</option>
+                      <option value="4">Quarterly</option>
+                      <option value="6">Semiannually</option>
+                      <option value="12">Annually</option>
                     </select>
             </div>
             </div>

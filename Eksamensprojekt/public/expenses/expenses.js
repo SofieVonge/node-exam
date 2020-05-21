@@ -21,27 +21,49 @@ $('#date').datepicker({
 });
 
 function sendExpense() {
-
+// SyntaxError: JSON.parse: unexpected character at line 1 column 1 of the JSON data ???
     const input = {
-        name: document.forms.new-expense.name.value.trim(),
-        amount: document.forms.new-expense.amount.value.trim(),
-        time: document.forms.new-expense.time.value.trim(),
-        date: document.forms.new-expense.date.value.trim(),
+        name: document.forms.expense.name.value.trim(),
+        amount: document.forms.expense.amount.value.trim(),
+        time: document.forms.expense.time.value.trim(),
+        date: document.forms.expense.date.value.trim()
     };
+
+    console.log(input);
 
     if (input.name.length < 1 || input.amount.length < 1 || input.date.length < 1) {
         $("#signin .error-message").text("Please fill out the form");
         return;
     }
 
-    if (!validateAmount(input.amount)) {
+    if (isNaN(input.amount)) {
         $("#signin .error-message").text("Please submit a number for a price");
         return;
     }
 
+    fetch("/api/expense/expenses", {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(input) // body data type must match "Content-Type" header
+    }).then(response => {
+        response.json().then(data => {
+            console.log(data);
+            if (response.status === 201) {
+                
+                const creationText =`<p>${data.response.name} was created.<br /></p>`;
+                $("#signup .error-message").css({color: 'blue'});
+                $("#signup .error-message").html(creationText);
+
+                //eventuelt husk at slette indhold i inputfelterne her??
+                return;
+            }
+
+            $("#signup .error-message").text(data.response);
+        });
+    });
+
 
 }
 
-function validateAmount(amount) {
-
-}

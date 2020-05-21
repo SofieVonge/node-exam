@@ -30,15 +30,18 @@ router.post("/api/expenses", async (req, res) => {
     const householdId = req.session.householdId;
     const { name, amount, time, date } = req.body;
 
+    const dateArr = date.split("/");
+    const month = dateArr.shift();
+    
     try {// getting the object Expense
         const expense = await Expense.query().insert({
             name,
-            amount,
-            timeBetween: time,
-            nextPayment: date,
+            amount: Number(amount),
+            timeBetween: Number(time),
+            nextPayment: Number(month),
             householdId
     }); 
-        return res.send({response: true}); // return true if it went well or return the expense created?
+        return res.status(201).send({response: expense});
 
     } catch(error) {
         return res.send({response: "Error with DB:", error})
