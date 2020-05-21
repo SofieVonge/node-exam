@@ -1,0 +1,58 @@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css"/>
+
+<div class="container">
+    <h1>Create new expense</h1>
+
+    <form id="new-expense" name="new-expense">
+        <div class="row">
+            <div class="col text-center">
+                <p class="error-message" style="color: brown;"></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control input-sm" placeholder="Name of expense" />
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="text" name="amount" class="form-control input-sm" placeholder="Price per month" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label for="select">Select interval:</label>
+                    <select class="form-control" id="select" name="time">
+                      <option>Monthly</option>
+                      <option>Every other month</option>
+                      <option>Every third month</option>
+                      <option>Quarterly</option>
+                      <option>Semiannually</option>
+                      <option>Annually</option>
+                    </select>
+            </div>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="date">Next payment month</label>
+                    <input class="form-control" id="date" name="date" placeholder="MM/YYYY" type="text"/>
+                  </div>
+        </div>
+        </div>
+
+        <div class="row">
+            <div class="container col-xs-12 col-sm-8 col-md-4">
+                <input type="button" value="SAVE" class="btn btn-info btn-block" onclick="sendExpense();">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="expenses.js"></script>

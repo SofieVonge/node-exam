@@ -11,3 +11,37 @@ fetch("/expenses")
                 $(".expense-container").append(expenseElement);
             });     
         });
+
+$('#date').datepicker({
+    format: "mm/yyyy",
+    startDate: "-Infinity",
+    minViewMode: 1,
+    maxViewMode: 2,
+    autoclose: true
+});
+
+function sendExpense() {
+
+    const input = {
+        name: document.forms.new-expense.name.value.trim(),
+        amount: document.forms.new-expense.amount.value.trim(),
+        time: document.forms.new-expense.time.value.trim(),
+        date: document.forms.new-expense.date.value.trim(),
+    };
+
+    if (input.name.length < 1 || input.amount.length < 1 || input.date.length < 1) {
+        $("#signin .error-message").text("Please fill out the form");
+        return;
+    }
+
+    if (!validateAmount(input.amount)) {
+        $("#signin .error-message").text("Please submit a number for a price");
+        return;
+    }
+
+
+}
+
+function validateAmount(amount) {
+
+}

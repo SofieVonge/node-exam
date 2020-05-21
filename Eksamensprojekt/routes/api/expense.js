@@ -28,14 +28,14 @@ router.get("/api/expenses/:id", async (req, res) => {
 
 router.post("/api/expenses", async (req, res) => {
     const householdId = req.session.householdId;
-    const { name, amount, time, next } = req.body;
+    const { name, amount, time, date } = req.body;
 
     try {// getting the object Expense
         const expense = await Expense.query().insert({
             name,
             amount,
             timeBetween: time,
-            nextPayment: next,
+            nextPayment: date,
             householdId
     }); 
         return res.send({response: true}); // return true if it went well or return the expense created?

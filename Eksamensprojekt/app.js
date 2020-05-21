@@ -86,6 +86,9 @@ app.use(authControllerRoute);
 const dashboardControllerRoute = require("./routes/controller/dashboard.js");
 app.use(dashboardControllerRoute);
 
+const expenseControllerRoute = require("./routes/controller/expenses.js");
+app.use(expenseControllerRoute);
+
 
 // making sandwich files to use to SSR
 const fs = require("fs");
@@ -94,16 +97,11 @@ const navbarView = fs.readFileSync("./public/navbar/navbar_default.html", "utf8"
 const footerView = fs.readFileSync("./public/footer/footer.html", "utf8");
 
 const homeView = fs.readFileSync("./public/frontpage/frontpage.html", "utf8");
-const summaryView = fs.readFileSync("./public/summary/summary.html", "utf8");
 
 
 // setting up routes
 app.get("/", (req, res) => {
     return res.send(navbarView + homeView + footerView);
-});
-
-app.get("/ny/1", (req, res) => {
-    return res.send(navbarView + summaryView + footerView);
 });
 
 
