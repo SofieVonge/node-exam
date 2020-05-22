@@ -3,28 +3,24 @@ const router = require("express").Router();
 const Summary = require("../../models/Summary.js");
 
 
-router.get("/summaries", async (req, res) => {
-    const householdId = req.session.householdId;
+router.get("/api/summaries", async (req, res) => {
+   // const householdId = req.session.householdId;
 
     try {
-        const summaries = await Summary.query().select().where("householdId", householdId);
+        const summaries = await Summary.query().select().where("householdId", 7);
         return res.send({response: summaries});
 
     } catch(error) {
-        return res.send({response: "Error with DB:", error});
+        return res.send({response: "Error with DB: " + error});
     }
 });
 
 // get details (the expenses) about a summary based on the summaryId
-router.get("/summaries/:id", async (req, res) => {
+router.get("/api/summaries/:id", async (req, res) => {
     const id = req.params.id;
-    const householdId = req.session.householdId;
 
     try {
-        //ingen af disse virker!
-        const summary = await Summary.query().withGraphFetched("expenses").where("id", id); // dette svarer måske til en join af de to tabeller?? 
-        // ide hvis overstående ikke virker : const summary = await Summary.query().findById(id).whereExists(Summary.relatedQuery("expenses"));
-       // const summary = await Summary.query().findById(id).withGraphFetched("expenses");
+        const summary = await Summary.query().withGraphFetched("expenses").where("id", id); 
         return res.send({response: summary});
 
 

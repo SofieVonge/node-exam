@@ -1,4 +1,4 @@
-fetch("/summaries")
+fetch("/api/summaries")
         .then(response => response.json())
         .then(data => {
             data.response.map((summary) => {
