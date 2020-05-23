@@ -8,6 +8,22 @@ const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
 
+router.get("/api/user/current", async (req, res) => {
+    const { userId, householdId } = req.session;
+
+    if (!(userId && householdId)) {
+        return res.status(401).send({ response: "Not authorized" });
+    }
+
+    try {
+        const user = await User.query().first().withGraphFetched('household.members').where({ id: userId });
+        delete user.password;
+
+        return res.send({ response: user });
+    } catch (err) {
+        return res.status(500).send({ response: `Error with the database: ${ err }` });
+});
+
 router.post("/api/user", async (req, res) => {
 
     const { username: username, password, email, household } = req.body;

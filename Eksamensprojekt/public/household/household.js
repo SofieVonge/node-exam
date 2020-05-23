@@ -1,27 +1,44 @@
-async function householdMembersList_populate() {
-    const response = await fetch("/api/household");
+async function populateHouseholdViewData() {
+    const response = await fetch("/api/user/current");
 
     if (response.status != 200) {
         // err
         return;
     }
 
-    const household = (await response.json()).response;
-    $(".household-view .household-name").text(household.name);
+    const user = (await response.json()).response;
+
+
+
+    
+
+
+    if (user.id == user.household.ownerId) {
+        $(".household-members-btn-new").css("display", "inline");
+    }
+
+    $(".household-view .household-name").text(user.household.name);
+
 
     const householdMemberListElement = $(".household-memberslist");
     const householdMemberDOMTemplate = $(".household-memberslist .row")[0];
 
+
     // populate household-memberslist with DOM-elements
-    household.members.forEach(member => {
+    user.household.members.forEach(member => {
         const householdMemberDOMElement = $(householdMemberDOMTemplate).clone();
+       
         
         const bntRemoveMember = householdMemberDOMElement.find(".household-member-btn-remove");
-
         $(householdMemberDOMElement).find(".household-member-name").text(member.username);
-        bntRemoveMember.attr("alt", (bntRemoveMember.attr("alt") + member.username));
-        bntRemoveMember.attr("data-username", member.username );
-        bntRemoveMember.attr("data-userId", member.id );
+
+        if (user.id == user.household.ownerId) {
+            bntRemoveMember.attr("alt", (bntRemoveMember.attr("alt") + member.username));
+            bntRemoveMember.attr("data-username", member.username );
+            bntRemoveMember.attr("data-userId", member.id );
+        } else {
+            bntRemoveMember.parent().css("display", "none");
+        }
 
         householdMemberListElement.append(householdMemberDOMElement);
     });
