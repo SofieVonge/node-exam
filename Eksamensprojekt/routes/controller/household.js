@@ -7,7 +7,7 @@ const footerView = fs.readFileSync("./public/footer/footer.html", "utf8");
 const newMemberView = fs.readFileSync("./public/household/createmember/createmember.html", "utf8");
 
 router.get("/household/*", (req, res, next) => {
-    if (!(req.session.userId && res.session.householdId)) {
+    if (!(req.session.userId && req.session.householdId)) {
         return res.redirect("/dashboard");
     }
 
