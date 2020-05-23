@@ -1,4 +1,4 @@
-async function HouseholdMembersList_populate() {
+async function householdMembersList_populate() {
     const response = await fetch("/api/household");
 
     if (response.status != 200) {
@@ -11,8 +11,6 @@ async function HouseholdMembersList_populate() {
 
     const householdMemberListElement = $(".household-memberslist");
     const householdMemberDOMTemplate = $(".household-memberslist .row")[0];
-
-    console.log(household.members);
 
     // populate household-memberslist with DOM-elements
     household.members.forEach(member => {
