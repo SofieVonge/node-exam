@@ -17,6 +17,7 @@ router.get("/api/user/current", async (req, res) => {
 
     try {
         const user = await User.query().first().withGraphFetched('household.members').where({ id: userId });
+
         delete user.password;
 
         return res.send({ response: user });
