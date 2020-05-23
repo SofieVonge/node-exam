@@ -25,7 +25,7 @@ function createMember()
         return;
     }
    
-    fetch("/api/user", {
+    fetch("/api/household/member", {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json'
