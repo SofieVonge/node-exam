@@ -6,6 +6,13 @@ const footerView = fs.readFileSync("./public/footer/footer.html", "utf8");
 
 const newMemberView = fs.readFileSync("./public/household/createmember/createmember.html", "utf8");
 
+router.get("/household/*", (req, res, next) => {
+    if (!(req.session.userId && res.session.householdId)) {
+        return res.redirect("/dashboard");
+    }
+
+    next();
+});
 
 router.get("/household/members/new", (req, res) => {
     return res.send(navbarView + newMemberView + footerView);
