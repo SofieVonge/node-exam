@@ -35,9 +35,8 @@ router.post("/api/auth/signin", async (req, res) => {
     }
 });
 
-router.post("/api/auth/signout", async (req, res) => {
-    
-
+router.post("/api/auth/signout", async (req, res) =>
+{
     try
     {
         delete req.session.userId;
