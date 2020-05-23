@@ -79,11 +79,13 @@ router.post("/api/auth/signin", async (req, res) => {
 
     try
     {
-        const user = await User.query().first().where('username', username);
+        const user = await User.query().first().withGraphFetched('household').where('username', username);
         if (user) {
             const bcryptResult = await bcrypt.compare(password, user.password);
             if (bcryptResult === true) {
                 req.session.userId = user.id;
+                req.session.householdId = user.household.id;
+                console.log("household Id:", req.session.householdId);
                 return res.status(200).send({ response: true });
             } else {
                 return res.status(400).send({ response: "password doesn't match" });
