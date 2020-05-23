@@ -1,1 +1,45 @@
-<h1>Create Member</h1>
+<div class="container">
+    <h1>Create Member</h1>
+
+    <form id="household-member-signupform" name="household_member_signupform">
+        <div class="row">
+            <div class="col text-center">
+                <p class="error-message" style="color: brown;"></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="text" name="username" class="form-control input-sm" placeholder="Username" />
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="email" name="email" class="form-control input-sm" placeholder="Email Address">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control input-sm" placeholder="Password">
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                    <input type="password" name="password_confirmation" class="form-control input-sm" placeholder="Confirm Password">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="container col-xs-12 col-sm-8 col-md-4">
+                <input type="button" value="SIGN UP" class="btn btn-info btn-block" onclick="createMember();">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/household/createmember/createmember.js"></script>

@@ -55,6 +55,12 @@ router.post("/api/auth/signup", async (req, res) =>
 
             // fetch newly created user with graph( household )
             const newUser = await User.query(trx).first().withGraphFetched("household").where({id: newHousehold.owner.id});
+            
+            /*
+            const newUser = newHousehold.owner;
+            newUser.household = newHousehold;
+            */
+
             delete newUser.password;
       
           // Whatever we return from the transaction callback gets returned
@@ -85,7 +91,6 @@ router.post("/api/auth/signin", async (req, res) => {
             if (bcryptResult === true) {
                 req.session.userId = user.id;
                 req.session.householdId = user.household.id;
-                console.log("household Id:", req.session.householdId);
                 return res.status(200).send({ response: true });
             } else {
                 return res.status(400).send({ response: "password doesn't match" });

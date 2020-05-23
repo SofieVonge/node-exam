@@ -78,6 +78,9 @@ app.use(summaryApiRoute);
 const userApiRoute = require("./routes/api/user.js");
 app.use(userApiRoute);
 
+const householdApiRoute = require("./routes/api/household.js");
+app.use(householdApiRoute);
+
 
 // setting up website routes
 const authControllerRoute = require("./routes/controller/auth.js");
