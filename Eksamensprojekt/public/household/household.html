@@ -12,7 +12,7 @@
                 <span class="household-member-name">Household Member Name</span>
             </div>
             <div class="col">
-                <a href="" class="household-member-btn-remove" onclick="householdMemberRemove(this)" data-userId="" data-username="" alt="remove household member ">remove</a>
+                <a href="" class="household-member-btn-remove" onclick="return householdMemberRemove(this)" data-userId="" data-username="" alt="remove household member ">remove</a>
             </div>
         </div>
     </div>
@@ -20,5 +20,5 @@
 
 <script src="/household/household.js"></script>
 <script>
-    populateHouseholdMembersList();
+    householdMembersList_populate();
 </script>
