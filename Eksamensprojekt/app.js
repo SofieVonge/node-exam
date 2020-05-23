@@ -92,6 +92,9 @@ app.use(expenseControllerRoute);
 const summaryControllerRoute = require("./routes/controller/summaries.js");
 app.use(summaryControllerRoute);
 
+const householdControllerRoute = require("./routes/controller/household.js");
+app.use(householdControllerRoute);
+
 
 // making sandwich files to use to SSR
 const fs = require("fs");
