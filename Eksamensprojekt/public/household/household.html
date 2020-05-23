@@ -1,15 +1,24 @@
-<div class="container">
-    <h1>Household</h1>
+<style>
+    .household-memberslist .row:first-child {
+        display: none;
+    }
+</style>
+
+<div class="container household-view">
+    <h1 class="household-name">Household</h1>
     <div class="container household-memberslist">
         <div class="row">
             <div class="col">
-                name | remove
+                <span class="household-member-name">Household Member Name</span>
             </div>
             <div class="col">
-                <a href="#" onclick="householdMemberRemove()" alt="Remove household member ">remove</a>
+                <a href="" class="household-member-btn-remove" onclick="householdMemberRemove(this)" data-userId="" data-username="" alt="remove household member ">remove</a>
             </div>
         </div>
     </div>
 </div>
 
 <script src="/household/household.js"></script>
+<script>
+    fetchHousehold();
+</script>
