@@ -89,6 +89,9 @@ app.use(dashboardControllerRoute);
 const expenseControllerRoute = require("./routes/controller/expenses.js");
 app.use(expenseControllerRoute);
 
+const summaryControllerRoute = require("./routes/controller/summaries.js");
+app.use(summaryControllerRoute);
+
 
 // making sandwich files to use to SSR
 const fs = require("fs");
