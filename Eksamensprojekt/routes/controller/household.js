@@ -8,7 +8,7 @@ const newMemberView = fs.readFileSync("./public/household/createmember/createmem
 
 
 router.get("/household/members/new", (req, res) => {
-    return res.send(navbarView + expenseView + footerView);
+    return res.send(navbarView + newMemberView + footerView);
 });
 
 module.exports = router;
