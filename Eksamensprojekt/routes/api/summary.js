@@ -7,7 +7,7 @@ router.get("/api/summaries", async (req, res) => {
    // const householdId = req.session.householdId;
 
     try {
-        const summaries = await Summary.query().select().where("householdId", 7);
+        const summaries = await Summary.query().withGraphFetched("user").where("householdId", 7);
         return res.send({response: summaries});
 
     } catch(error) {
@@ -20,7 +20,7 @@ router.get("/api/summaries/:id", async (req, res) => {
     const id = req.params.id;
 
     try {
-        const summary = await Summary.query().withGraphFetched("expenses").where("id", id); 
+        const summary = await Summary.query().withGraphFetched("expenses").withGraphFetched("user").where("id", id); 
         return res.send({response: summary});
 
 

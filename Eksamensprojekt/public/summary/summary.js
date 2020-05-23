@@ -2,7 +2,7 @@ const href = window.location.href.split("/");
 const id = href.pop();
 
 
-fetch(`/summaries/${id}`)
+fetch(`/api/summaries/${id}`)
         .then(response => response.json())
         .then(data => {
             data.response.map((expense) => {
@@ -13,5 +13,5 @@ fetch(`/summaries/${id}`)
             });
 
             $("#total").html(expense.total);
-            $("#per-person").html(); //total divideret med antal i household???   
+            $("#per-person").html(expense.total / expense.user.memberCount); //total divideret med antal i household???   
         });
