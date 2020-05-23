@@ -9,7 +9,9 @@ const saltRounds = 12;
 
 /* security middleware */
 router.use("/api/household/*", (req, res, next) => {
-    if (!(req.session.userId && req.session.householdId)) {
+    const { userId, householdId } = req.session;
+
+    if (!(userId && householdId)) {
         return res.status(401).send({ response: "Unauthorized access" });
     }
     return next();
