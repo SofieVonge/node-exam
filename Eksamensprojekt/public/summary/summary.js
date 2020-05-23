@@ -13,5 +13,5 @@ fetch(`/api/summaries/${id}`)
             });
 
             $("#total").html(expense.total);
-            $("#per-person").html(expense.total / expense.user.memberCount); //total divideret med antal i household???   
+            $("#per-person").html(expense.total / expense.user.memberCount);
         });

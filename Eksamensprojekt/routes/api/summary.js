@@ -4,10 +4,10 @@ const Summary = require("../../models/Summary.js");
 
 
 router.get("/api/summaries", async (req, res) => {
-   // const householdId = req.session.householdId;
+    const householdId = req.session.householdId;
 
     try {
-        const summaries = await Summary.query().withGraphFetched("user").where("householdId", 7);
+        const summaries = await Summary.query().withGraphFetched("user").where("householdId", householdId);
         return res.send({response: summaries});
 
     } catch(error) {
