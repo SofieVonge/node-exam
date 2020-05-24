@@ -15,16 +15,16 @@ function sendExpense() {
     };
 
     if (input.name.length < 1 || input.amount.length < 1 || input.date.length < 1) {
-        $("#signin .error-message").text("Please fill out the form");
+        $("#new-expense .error-message").text("Please fill out the form");
         return;
     }
 
     if (isNaN(input.amount)) {
-        $("#signin .error-message").text("Please submit a number for a price");
+        $("#new-expense .error-message").text("Please submit a number for a price");
         return;
     }
 
-    fetch("/api/expense/expenses", {
+    fetch("/api/expenses", {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json'
@@ -32,18 +32,17 @@ function sendExpense() {
         body: JSON.stringify(input) // body data type must match "Content-Type" header
     }).then(response => {
         response.json().then(data => {
-            console.log(data);
             if (response.status === 201) {
                 
                 const creationText =`<p>${data.response.name} was created.<br /></p>`;
-                $("#signup .error-message").css({color: 'blue'});
-                $("#signup .error-message").html(creationText);
+                $("#new-expense .error-message").css({color: 'blue'});
+                $("#new-expense .error-message").html(creationText);
 
                 //eventuelt husk at slette indhold i inputfelterne her??
                 return;
             }
 
-            $("#signup .error-message").text(data.response);
+            $("#new-expense .error-message").text(data.response);
         });
     });
 
