@@ -98,6 +98,10 @@ app.use(summaryControllerRoute);
 const householdControllerRoute = require("./routes/controller/household.js");
 app.use(householdControllerRoute);
 
+// setting up service
+const summaryService = require("./routes/service/summaryMaker.js");
+app.use(summaryService);
+
 
 // making sandwich files to use to SSR
 const fs = require("fs");

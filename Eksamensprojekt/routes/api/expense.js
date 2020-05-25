@@ -57,7 +57,7 @@ router.delete("/api/expenses/:id", async (req, res) => {
         const unrelated = await Expense.relatedQuery("summaries").for(id).unrelate();
         // then we can delete the expense
         const numDeleted = await Expense.query().deleteById(id); //getting the number of items deleted
-        return res.send({response: true}); // return true or number of deleted items?
+        return res.status(201).send({response: true}); // return true or number of deleted items?
 
     } catch(error) {
         return res.send({response: "Error with DB: " + error})
