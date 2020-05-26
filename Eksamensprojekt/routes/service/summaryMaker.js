@@ -28,5 +28,6 @@ function createSummary(householdId) {
 
 }
 
+    // create summary for each household
 
 module.exports = router;
