@@ -6,6 +6,7 @@ class Household extends Model {
 
     static get relationMappings() {
         const User = require("./User.js");
+        const Summary = require("./Summary.js");
 
         return {
             owner: {
@@ -27,7 +28,15 @@ class Household extends Model {
                     },
                     to: 'users.id'
                 }
-            }
+            },
+            summaries: {
+                relation: Model.HasManyRelation,
+                modelClass: Summary,
+                join: {
+                    from: 'households.id',
+                    to: 'summaries.householdId'
+                }
+            },
         };
 
     }
