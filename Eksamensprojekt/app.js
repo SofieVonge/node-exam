@@ -100,7 +100,17 @@ app.use(householdControllerRoute);
 
 // setting up service
 const summaryService = require("./routes/service/summaryMaker.js");
-app.use(summaryService);
+app.use(summaryService.router);
+
+
+// const reference to method CronJob in package cron
+const CronJob = require("cron").CronJob;
+
+// create summaries at 00:05 on the 20th every month
+const job = new CronJob('5 0 20 * *', function() {
+    summaryService.createSummaries();
+});
+
 
 
 // making sandwich files to use to SSR
