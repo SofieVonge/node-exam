@@ -1,33 +1,77 @@
 const router = require("express").Router();
 
+const Household = require("../../models/Household.js");
 const Summary = require("../../models/Summary.js");
+const Expense = require("../../models/Expense.js");
 
 
-router.use((req, res, next) => {
-    const householdId = req.session.householdId;
-    const now = new Date();
-
-    if (now.getDate() === 20 && !summaryExists(householdId, now.getMonth(), now.getFullYear())) {
-        //TODO: make new summary, call next?
-    } else {
-        next();
-    }
+router.get("/testRoute", async (req, res) => {
+    return res.send(await fetchHouseholdsWithMissingSummary(5, 2020));
 });
 
-async function summaryExists(householdId, month, year) {
-    const summary = await Summary.query().first().where("householdId", householdId).where("paymentDate", new Date(year, month, 20));
+async function fetchHouseholdsWithMissingSummary(month, year) {
+    const createdAtFrom = new Date(year, month, 1); // start of month
+    const createdAtTo = new Date(year, month + 1, 0);// end of month
 
-    if (summary) {
-        return false;
-    } else {
-        return true;
+    const summaryQuery = Household.relatedQuery("summaries").whereBetween("summaries.createdAt", [createdAtFrom, createdAtTo]);
+    const households = await Household.query().whereNotExists(summaryQuery);
+
+    return households;
+}
+
+
+function setNextPayment(expense) {
+    // Sofies algo
+}
+
+
+async function createSummary(householdId, month, year) {
+
+    const expensesPaidFrom = new Date(year, month, 1); // start of month
+    const expensesPaidTo = new Date(year, month + 1, 0); // end of month
+    const expenses = await Expense.query().whereBetween("nextPayment", [expensesPaidFrom, expensesPaidTo]);
+
+    let total = 0;
+    summary.expenses.map(expense => {
+        total++;
+        setNextPayment(expense);
+    });
+
+    // transaction will rollback if an exception is thrown
+    const summary = await Summary.transaction(async (trx) => {
+        
+        const upsertOptions = {
+            relate: ['expenses'],
+            update: ['expenses'],
+            noDelete: ['expenses']
+        }
+
+        // insert summary with relations to  expenses
+        const summary = await Summary.query(trx).upsertGraphAndFetch({
+            paymentDate: new Date(year, month, 20, 0, 0, 0, 0),
+            total,
+            householdId,
+            expenses,
+        }, upsertOptions);
+
+        return summary;
+    });
+
+    return summary;
+}
+
+let createSummaries = async function () {
+    const now = new Date();
+    // household with no summary for next month (created this month)
+    const households = await fetchHouseholdsWithMissingSummary(now.getFullYear(), now.getMonth());
+
+    // create summary for each household
+    for (let i in households) {
+        createSummary(households[i].id, now);
     }
 }
 
-function createSummary(householdId) {
-
-}
-
-    // create summary for each household
-
-module.exports = router;
+module.exports = {
+    router,
+    createSummaries
+};
