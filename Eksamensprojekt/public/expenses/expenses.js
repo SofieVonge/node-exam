@@ -20,9 +20,9 @@ function intervalConverter(number) {
         case 2:
             return "Every second month";
         case 3:
-            return "Every third month";
-        case 4:
             return "Quarterly";
+        case 4:
+            return "Every fourth month";
         case 6:
             return "Semiannually";
         case 12:

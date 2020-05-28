@@ -21,7 +21,53 @@ async function fetchHouseholdsWithMissingSummary(month, year) {
 
 
 function setNextPayment(expense) {
-    // Sofies algo
+    
+    let next = expense.nextPayment;
+    const id = expense.id;
+
+    switch (expense.timeBetween) {
+
+        case 1:
+            if (next < 12) {
+                updateNextPayment(next++, id);
+            } else{
+                updateNextPayment(1, id);
+            }
+            return;
+        case 2:
+            next = next + 2;
+            break;
+        case 3:
+            next = next + 3;
+            break;
+        case 4:
+            next = next + 4;
+            break;
+        case 6:
+            next = next + 6;
+           break;
+        case 12:
+            //not needed to do anything here?
+           // updateNextPayment(next, id);
+            return;
+         
+    }
+    
+    if (next > 12) {
+        updateNextPayment(next - 12, id);
+    } else {
+        updateNextPayment(next, id);
+    }
+}
+
+async function updateNextPayment(next, id) {
+    try {
+        const numUpdated = await Expense.query().findById(id).patch({
+            nextPayment: next
+        });
+    } catch (error) {
+        console.log(error);
+    }   
 }
 
 
