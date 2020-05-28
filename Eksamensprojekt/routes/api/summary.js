@@ -7,7 +7,7 @@ router.get("/api/summaries", async (req, res) => {
     const householdId = req.session.householdId;
 
     try {
-        const summaries = await Summary.query().withGraphFetched("user").where("householdId", householdId);
+        const summaries = await Summary.query().withGraphFetched("household").where("householdId", householdId);
         return res.send({response: summaries});
 
     } catch(error) {

@@ -26,10 +26,7 @@ function setNextPayment(expense) {
 
 
 async function createSummary(householdId, month, year) {
-
-    const expensesPaidFrom = new Date(year, month, 1); // start of month
-    const expensesPaidTo = new Date(year, month + 1, 0); // end of month
-    const expenses = await Expense.query().whereBetween("nextPayment", [expensesPaidFrom, expensesPaidTo]);
+    const expenses = await Expense.query().where("nextPayment", month);
 
     let total = 0;
     summary.expenses.map(expense => {
@@ -62,8 +59,9 @@ async function createSummary(householdId, month, year) {
 
 let createSummaries = async function () {
     const now = new Date();
+    now.setMonth(now.getMonth() + 1);
     // household with no summary for next month (created this month)
-    const households = await fetchHouseholdsWithMissingSummary(now.getFullYear(), now.getMonth());
+    const households = await fetchHouseholdsWithMissingSummary(now.getMonth(), now.getFullYear());
 
     // create summary for each household
     for (let i in households) {
