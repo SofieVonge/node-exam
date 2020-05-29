@@ -22,9 +22,9 @@ async function fetchHouseholdsWithMissingSummary(month, year) {
 
 function setNextPayment(expense) {
     
-    let next = expense.nextPayment;
+    let next = expense.nextPayment + expense.timeBetween;
     const id = expense.id;
-
+/*
     switch (expense.timeBetween) {
 
         case 1:
@@ -51,7 +51,7 @@ function setNextPayment(expense) {
            // updateNextPayment(next, id);
             return;
          
-    }
+    }*/
     
     if (next > 12) {
         updateNextPayment(next - 12, id);
