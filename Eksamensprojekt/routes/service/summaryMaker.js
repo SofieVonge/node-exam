@@ -20,19 +20,22 @@ function ensureTwoDigitString(num) {
  * 
  **/
 Date.prototype.toMysqlFormat = function() {
-    return this.getFullYear() + "-" + ensureTwoDigitString(this.getMonth()) + "-" + ensureTwoDigitString(this.getDate()) + "T" + ensureTwoDigitString(this.getHours()) + ":" + ensureTwoDigitString(this.getMinutes()) + ":" + ensureTwoDigitString(this.getSeconds()) + ".000Z";
+    //return this.toISOString().split('T')[0] + ' ' + this.toTimeString().split(' ')[0];
+    return this.getFullYear() + "-" + ensureTwoDigitString((1 + this.getUTCMonth())) + "-" + ensureTwoDigitString(this.getDate()) + "T" + ensureTwoDigitString(this.getHours()) + ":" + ensureTwoDigitString(this.getMinutes()) + ":" + ensureTwoDigitString(this.getSeconds()) + "Z";
 };
 
 
 
 router.get("/testRoute", async (req, res) => {
-    //return res.send(await fetchHouseholdsWithMissingSummary(5, 2020));
+    //return res.send(await fetchHouseholdsWithMissingSummary(7, 2020));
     return res.send(await createSummaries());
 });
 
 async function fetchHouseholdsWithMissingSummary(month, year) {
     const createdAtFrom = new Date(year, month, 1); // start of month
     const createdAtTo = new Date(year, month + 1, 0);// end of month
+
+    console.log("M:", month, createdAtFrom.toMysqlFormat(), createdAtTo.toMysqlFormat());
 
     const summaryQuery = Household.relatedQuery("summaries").whereBetween("summaries.paymentDate", [createdAtFrom.toMysqlFormat(), createdAtTo.toMysqlFormat()]);
     const households = await Household.query().whereNotExists(summaryQuery);
@@ -94,8 +97,9 @@ async function updateNextPayment(next, id) {
 
 
 async function createSummary(householdId, month, year) {
-    const expenses = await Expense.query().where({nextPayment: month + 1, householdId});
-
+    console.log("month:", (month + 1));
+    const expenses = await Expense.query().where({nextPayment: (month + 1), householdId});
+    console.log("exp:", expenses.length);
     let total = 0;
     expenses.map(expense => {
         total += expense.amount;
@@ -112,13 +116,13 @@ async function createSummary(householdId, month, year) {
             noDelete: ['expenses']
         }
 
-        const paymentDate = new Date(year, month, 20, 0, 0, 0, 1);
+        const paymentDate = new Date(year, (month-1), 20);
 
         //console.log(paymentDate);
 
         // insert summary with relations to  expenses
         const summary = await Summary.query(trx).upsertGraphAndFetch({
-            paymentDate: paymentDate.getFullYear() + "-" + paymentDate.getMonth() + "-20",
+            paymentDate: paymentDate.getFullYear() + "." + (paymentDate.getUTCMonth() + 1) + ".20",
             total,
             householdId,
             expenses,
@@ -133,19 +137,13 @@ async function createSummary(householdId, month, year) {
 let createSummaries = async function () {
     let summaries = [];
     const now = new Date();
-    now.setMonth(now.getMonth() + 1);
-    // household with no summary for next month (created this month)
-    //const households = await fetchHouseholdsWithMissingSummary(now.getMonth(), now.getFullYear());
     
-    const households = await fetchHouseholdsWithMissingSummary(now.getMonth(), now.getFullYear());
-    console.log(households);
-
-
+    const households = await fetchHouseholdsWithMissingSummary(now.getMonth()+1, now.getFullYear());
 
     try {
         // create summary for each household
         for (let i in households) {
-            summaries.push(await createSummary(households[i].id, now.getMonth(), now.getUTCFullYear()));
+            summaries.push(await createSummary(households[i].id, now.getMonth()+1, now.getUTCFullYear()));
         }
     } catch (err) {
         console.log(err);
