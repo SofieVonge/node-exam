@@ -3,6 +3,16 @@ const router = require("express").Router();
 const Summary = require("../../models/Summary.js");
 
 
+router.use("/api/summaries/*", (req, res, next) => {
+    if (!(req.session.userId && req.session.householdId)) {
+        return res.status(401).send({ response: "Unauthorized access"});
+    }
+
+    return next();
+});
+
+
+
 router.get("/api/summaries", async (req, res) => {
     const householdId = req.session.householdId;
 
