@@ -70,6 +70,7 @@ router.post("/api/household/member", async (req, res) =>
                 return res.status(400).send({ response: "username or email already exist in the system" });
             }
 
+
             // insert user to db
             const newUser = await household.$relatedQuery('members').insertAndFetch(
             {
@@ -78,6 +79,10 @@ router.post("/api/household/member", async (req, res) =>
                 email,
                 household: household
             });
+
+            // increase membersCount
+            await Household.query().increment('memberCount', 1).where({ id: household.id });
+
             delete newUser.password;
     
             return res.status(201).send({response: newUser});
