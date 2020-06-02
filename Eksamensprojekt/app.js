@@ -51,18 +51,8 @@ const authLimiter = rateLimit({
     max: 4
 });
 
-/* TODO: set the correct routes for the auth limiter!
-app.use("/", authLimiter);
-app.use("/", authLimiter);
-*/
-
-// setting up middleware
-/*app.use((req, res, next) => {
-    //TODO: write middleware, maybe move based on the other routes!
-    next();
-});*/
-
-
+app.use("/api/auth/signin", authLimiter);
+app.use("/api/household/member", authLimiter);
 
 
 // setting up api routes
