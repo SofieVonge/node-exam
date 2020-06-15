@@ -83,14 +83,14 @@ router.put("/api/expenses/:id", async (req, res) => {
     const month = dateArr.shift();
 
     try {
-        const numUpdated = await Expense.query().findById(id).patch({
+        const updatedExpense = await Expense.query().patchAndFetchById(id, {
             name,
             amount,
             timeBetween: time,
             nextPayment: month,
         });
 
-        return res.send({response: true}); // return true or number of updated items? can also return the item itself with patchAndFetchById()
+        return res.status(201).send({response: updatedExpense});
 
     } catch(error) {
         return res.send({response: "Error with DB: " + error})

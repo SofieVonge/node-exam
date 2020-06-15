@@ -38,7 +38,10 @@ function sendExpense() {
                 $("#new-expense .error-message").css({color: 'blue'});
                 $("#new-expense .error-message").html(creationText);
 
-                //eventuelt husk at slette indhold i inputfelterne her??
+                $("#name").val("");
+                $("#amount").val("");
+                $("#date").val("");
+                $("#select").val("1");
                 return;
             }
 

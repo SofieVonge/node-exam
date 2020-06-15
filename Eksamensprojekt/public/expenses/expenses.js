@@ -6,7 +6,7 @@ fetch("/api/expenses")
                 $(expenseElement).find("#name").html(expense.name); 
                 $(expenseElement).find("#amount").html(expense.amount);
                 $(expenseElement).find("#time").html(intervalConverter(expense.timeBetween));
-                $(expenseElement).find("#update").html(`<a href="/updateExpense/${expense.id}" class="btn btn-info" role="button">Update</a>`);
+                $(expenseElement).find("#update").html(`<a href="/expenses/update/${expense.id}" class="btn btn-info" role="button">Update</a>`);
                 $(expenseElement).find("#delete").html(`<a href="#" onclick="return deleteExpense(${expense.id})" class="btn btn-info" role="button">Delete</a>`);
                 $(".expense-container").append(expenseElement);
             });     
