@@ -1,17 +1,15 @@
-let href = window.location.href.split("/");
+const href = window.location.href.split("/");
 const id = href.pop();
-console.log("id", id);
 
 fetch(`/api/expenses/${id}`)
 .then(response => response.json())
 .then(data => {
-    console.log(data.response.name);
     $("#name").val(data.response.name); 
     $("#amount").val(data.response.amount);
     $("#select").val(data.response.timeBetween);
 });
 
-function updateExpense(id) {
+function updateExpense() {
 
     const input = {
         name: document.forms.expense.name.value.trim(),
@@ -38,7 +36,8 @@ function updateExpense(id) {
         body: JSON.stringify(input)
     }).then(response => {
         response.json().then(data => {
-            if (response.status === 201) {    
+            if (response.status === 201) {
+                console.log(data);  
                 const creationText =`<p>${data.response.name} was updated.<br /></p>`;
                 $("#update-expense .error-message").css({color: 'blue'});
                 $("#update-expense .error-message").html(creationText);
