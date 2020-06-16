@@ -7,6 +7,24 @@ fetch(`/api/expenses/${id}`)
     $("#name").val(data.response.name); 
     $("#amount").val(data.response.amount);
     $("#select").val(data.response.timeBetween);
+
+    const today = new Date();
+
+    if (data.response.nextPayment >= today.getMonth()) {
+        $("#date").val(data.response.nextPayment + "/" + today.getFullYear());
+    } else {
+        let year = today.getFullYear();
+        year++;
+        $("#date").val(data.response.nextPayment + "/" + year);
+    }
+});
+
+$('#date').datepicker({
+    format: "mm/yyyy",
+    startDate: "-Infinity",
+    minViewMode: 1,
+    maxViewMode: 2,
+    autoclose: true
 });
 
 function updateExpense() {
