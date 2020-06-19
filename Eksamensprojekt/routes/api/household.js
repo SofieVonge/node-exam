@@ -105,8 +105,8 @@ router.post("/api/household/member", async (req, res) =>
  * Deletes user in database.
  */
 router.delete("/api/household/member/:id", async (req, res) => {
-    const householdId = req.session?.householdId;
-    const requestingUserId = req.session?.userId;
+    const householdId = req.session.householdId;
+    const requestingUserId = req.session.userId;
     const userId = req.params.id;
 
     if (!userId) {
