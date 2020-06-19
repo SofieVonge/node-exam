@@ -124,6 +124,10 @@ router.delete("/api/household/member/:id", async (req, res) => {
             return res.status(401).send({ response: "Insufficient privileges to complete the operation."});
         }
 
+        if (household.ownerId == userId) {
+            return res.status(401).send({ response: "Household owner cannot be deleted."});
+        }
+
         const numDeleted = await household.$relatedQuery('members').deleteById(userId);
         return res.send({ response: numDeleted });
     }
