@@ -30,10 +30,8 @@ router.get("/api/summaries/:id", async (req, res) => {
     const id = req.params.id;
 
     try {
-        const summary = await Summary.query().first().withGraphFetched("expenses").withGraphFetched("user").where("id", id); 
+        const summary = await Summary.query().first().withGraphFetched("expenses").withGraphFetched("household").where("id", id); 
         return res.send({response: summary});
-
-
     } catch(error) {
         return res.send({response: "Error with DB:" + error});
     }

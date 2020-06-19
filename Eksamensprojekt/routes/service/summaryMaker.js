@@ -41,7 +41,6 @@ async function fetchHouseholdsWithMissingSummary(month, year) {
 }
 
 
-
 async function createSummary(householdId, month, year) {
     const expenses = await Expense.query().where({nextPayment: (month + 1), householdId});
     let total = 0;

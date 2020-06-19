@@ -105,7 +105,8 @@ router.post("/api/household/member", async (req, res) =>
  * Deletes user in database.
  */
 router.delete("/api/household/member/:id", async (req, res) => {
-    const householdId = req.session.householdId;
+    const householdId = req.session?.householdId;
+    const requestingUserId = req.session?.userId;
     const userId = req.params.id;
 
     if (!userId) {
@@ -117,6 +118,10 @@ router.delete("/api/household/member/:id", async (req, res) => {
 
         if (!household) {
             return res.status(500).send({ response: `Could not fetch household by id: ${ householdId }` });
+        }
+
+        if (household.ownerId != requestingUserId) {
+            return res.status(401).send({ response: "Insufficient privileges to complete the operation."});
         }
 
         const numDeleted = await household.$relatedQuery('members').deleteById(userId);
