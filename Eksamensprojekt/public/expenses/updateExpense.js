@@ -10,12 +10,10 @@ fetch(`/api/expenses/${id}`)
 
     const today = new Date();
 
-    if (data.response.nextPayment >= today.getMonth()) {
+    if (data.response.nextPayment >= today.getMonth()+1) {
         $("#date").val(data.response.nextPayment + "/" + today.getFullYear());
     } else {
-        let year = today.getFullYear();
-        year++;
-        $("#date").val(data.response.nextPayment + "/" + year);
+        $("#date").val(data.response.nextPayment + "/" + today.getFullYear()+1);
     }
 });
 
