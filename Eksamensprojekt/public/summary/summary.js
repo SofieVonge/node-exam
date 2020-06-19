@@ -15,5 +15,5 @@ fetch(`/api/summaries/${id}`)
         });
 
         $("#total").append(`<b>Total</b>: ${data.response.total}`);
-        $("#per-person").append(`<b>Per person</b>: ${data.response.total / data.response.user.memberCount}`);
+        $("#per-person").append(`<b>Per person</b>: ${data.response.total / data.response.household.memberCount}`);
     });

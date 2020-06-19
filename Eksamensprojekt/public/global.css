@@ -1,7 +1,22 @@
 #main-content {
-    min-height: calc(100vh - .25em);
+    min-height: calc(100vh - 10%);
+    margin-bottom: -10%;
 }
 
 footer {
-    height: .25em;
+    height: 10%;
 }
+
+.table-center-50 {
+    margin: auto;
+    width: 50% !important; 
+ }
+
+ .table-center-100 {
+    margin: auto;
+    width: 100% !important; 
+ }
+
+ .margin-center {
+     margin: 0px auto 0px auto;
+ }
