@@ -1,10 +1,12 @@
 #main-content {
-    min-height: calc(100vh - 10%);
-    margin-bottom: -10%;
+    min-height: calc(100vh - 110px);
+    margin-bottom: 110px;
 }
 
 footer {
-    height: 10%;
+    position: fixed;
+    bottom: 0px;
+    height: 110px;
 }
 
 .table-center-50 {
