@@ -4,9 +4,12 @@
 }
 
 footer {
+    width: 100%;
     position: fixed;
     bottom: 0px;
     height: 110px;
+    z-index: 100;
+    background-color: white;
 }
 
 .table-center-50 {
