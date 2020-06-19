@@ -1,7 +1,7 @@
-footer {
-    height: 10px;
+#main-content {
+    min-height: calc(100vh - .25em);
 }
 
-#main-content {
-    min-height: calc(100vh - 110px);
+footer {
+    height: .25em;
 }
