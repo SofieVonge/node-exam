@@ -12,7 +12,7 @@ router.get("/household/*", (req, res, next) => {
         return res.redirect("/dashboard");
     }
 
-    next();
+    return next();
 });
 
 router.get("/household", (req, res) => {

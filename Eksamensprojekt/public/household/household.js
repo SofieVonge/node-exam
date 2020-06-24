@@ -6,11 +6,7 @@ async function populateHouseholdViewData() {
         return;
     }
 
-    const user = (await response.json()).response;
-
-
-
-    
+    const user = (await response.json()).response;    
 
 
     if (user.id == user.household.ownerId) {

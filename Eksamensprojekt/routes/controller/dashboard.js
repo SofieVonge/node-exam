@@ -11,7 +11,7 @@ router.use("/dashboard/*", (req, res, next) => {
     if (!req.session.userId) {
         return res.redirect("/auth/signin");
     }
-    next();
+    return next();
 });
 
 router.get("/dashboard", (req, res) => {

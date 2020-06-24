@@ -78,7 +78,7 @@ async function createSummary(householdId, month, year) {
     return summary;
 }
 
-let createSummaries = async function () {
+const createSummaries = async function () {
     let summaries = [];
     const now = new Date();
     

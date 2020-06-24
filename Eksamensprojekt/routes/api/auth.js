@@ -5,6 +5,7 @@ const saltRounds = 12;
 
 const User = require("../../models/User.js");
 const Household = require("../../models/Household.js");
+const ChatAuthentication = require("../../models/ChatAuthentication.js");
 
 
 router.post("/api/auth/signin", async (req, res) => {
@@ -23,6 +24,22 @@ router.post("/api/auth/signin", async (req, res) => {
             if (bcryptResult === true) {
                 req.session.userId = user.id;
                 req.session.householdId = user.household.id;
+
+                const chatAuthenticationKey = await bcrypt.hash((Date.now()).toString(), saltRounds);
+
+                try {
+                    await ChatAuthentication.query().insert({
+                        userId: user.id,
+                        key: chatAuthenticationKey,
+                    });                   
+                } catch (err) {
+                    if (err.name == 'UniqueViolationError') {
+                        await ChatAuthentication.query().where({userId: user.id}).update({
+                            key: chatAuthenticationKey,
+                        });
+                    }
+                }
+
                 return res.status(200).send({ response: true });
             } else {
                 return res.status(400).send({ response: "password doesn't match" });
@@ -31,6 +48,7 @@ router.post("/api/auth/signin", async (req, res) => {
             return res.status(400).send({ response: "username not found" });
         }
     } catch (ex) {
+        console.log(ex);
         return res.status(500).send({ response: "something went wrong with the DB" })
     }
 });

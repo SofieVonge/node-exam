@@ -1,16 +1,28 @@
+
 </div>
 <footer>
     <hr />
     <div class="container">
+        <div id="webchat-widget-container" class="expand-vertically">
+            <!--  -->
+            
+            <div id="webchat-widget-container-inner">
+                Chat is loaded here via $JQuery
+            </div>
+            <div id="webchat-widget-toggle-display">[TOGGLE CHAT]</div>
+        </div>
+
         <p id="copyright"></p>
         <p>Sofie Vonge Jensen & Daniel Blom</p>
     </div>
-    
 </footer>
 <script>
     const currentYear = new Date().getFullYear();
 
     $("#copyright").text("Copyright (C) " + currentYear);
+
+    // load chat
+    $("#webchat-widget-container-inner").load("/household/chat/chatwidget.html");
 </script>
     
 </body>

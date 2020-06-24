@@ -12,6 +12,10 @@ footer {
     background-color: white;
 }
 
+footer > .container {
+    position: relative;
+}
+
 .table-center-50 {
     margin: auto;
     width: 50% !important; 
@@ -25,3 +29,16 @@ footer {
  .margin-center {
      margin: 0px auto 0px auto;
  }
+
+
+ .expand-vertically {
+     display: flex;
+     flex-direction: column;
+ }
+
+ .expand-vertically > div {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

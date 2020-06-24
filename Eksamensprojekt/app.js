@@ -1,7 +1,8 @@
 // setting up express
 const express = require("express");
 const app = express();
-
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 
 // setting up parsing of json and form-data
 app.use(express.json());
@@ -93,6 +94,16 @@ const summaryService = require("./routes/service/summaryMaker.js");
 app.use(summaryService.router);
 
 
+const webchatApiRoute = require("./routes/api/webchat.js");
+app.use(webchatApiRoute);
+
+/*const ChatService = require("./routes/service/chatService.js");
+const chatService = new ChatService(app, 3001);*/
+
+const chatService = require("./routes/service/chatService.js");
+chatService.run(io);
+
+
 // const reference to method CronJob in package cron
 const CronJob = require("cron").CronJob;
 
@@ -107,7 +118,7 @@ const job = new CronJob('5 0 20 * *', function() {
 const fs = require("fs");
 
 const navbarView = fs.readFileSync("./public/navbar/navbar_default.html", "utf8");
-const footerView = fs.readFileSync("./public/footer/footer.html", "utf8");
+const footerView = fs.readFileSync("./public/footer/footer_default.html", "utf8");
 
 const homeView = fs.readFileSync("./public/frontpage/frontpage.html", "utf8");
 
@@ -118,16 +129,22 @@ app.get("/", (req, res) => {
 });
 
 
+/**
+ * TODO:
+ * SETUP
+ * app.listen(...) --> ('http').createServer(app).listen(...)
+ */
+
 
 // setting up the port and start to listen
 const port = process.env.PORT ? process.env.PORT : 3000;
-const server = app.listen(port, (error) => {
+/*const server = */
+server.listen(port, (error) => {
     if (error)
     {
         console.log("Not running: " + error);
+        return;
     }
-    else {
-        console.log("This server is running on port", server.address().port);
-    }
+    console.log("This server is running on port", port);
 });
 

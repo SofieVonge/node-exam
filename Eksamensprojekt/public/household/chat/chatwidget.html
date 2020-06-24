@@ -1,0 +1,66 @@
+<style>
+    #webchat-widget-container {
+        position: absolute;
+        right: 0px;
+        bottom: 120px;
+    }
+
+    #household-chatwidget.closed {
+        display: none;
+    }
+
+    #household-chatwidget {        
+        background-color: #FFFFFFFF;
+    }
+
+    #webchat-widget-container #webchat-widget-toggle-display {
+        text-align: right;
+    }
+
+    #household-chatwidget-chatbox {
+        height: 320px;
+        width: 320px;
+        border: 1px solid #0C0C0CFF;
+        overflow: hidden;
+        overflow-y: scroll;
+        overflow: overlay;
+    }
+
+    .household-chatmessage-container {
+        background-color: #3083F005;
+        overflow-wrap: break-word;
+        padding: 2px 5px;
+    }
+
+    .household-chatmessage-container:nth-child(2n) {
+        background-color: #3083F019;
+    }
+
+    #household-chatwidget-chatbox .household-chatmessage-container:nth-child(1) {
+        display: none;
+    }
+</style>
+
+<div id="household-chatwidget" class="closed">
+    <div id="household-chatwidget-chatbox">
+        <!-- Chat message template -->
+        <div class="household-chatmessage-container">
+            <div>
+                <span class="household-chatmessage-membername"></span>
+            </div>
+            <div>
+                <span class="household-chatmessage"></span>
+            </div>
+        </div>
+        <!-- END Chat message template -->
+    </div>
+    <div>
+        <input id="household-chatwidget-chatmessage-text" type="text" placeholder="chat message goes here.." /> <input id="household-chatwidget-btn-send" type="button" value="SEND" onclick="void(-1);" />
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+
+<script>
+    var url = "/household/chat/chatwidget.js";
+    $.getScript(url);
+</script>
