@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const User = require("../../models/User.js");
 const Household = require("../../models/Household.js");
+const ChatAuthentication = require("../../models/ChatAuthentication.js");
 
 
 const bcrypt = require('bcrypt');
@@ -127,6 +128,7 @@ router.delete("/api/household/member/:id", async (req, res) => {
         if (household.ownerId == userId) {
             return res.status(401).send({ response: "Household owner cannot be deleted."});
         }
+        const deleteChatAuth = await ChatAuthentication.query().deleteById(userId);
 
         const numDeleted = await household.$relatedQuery('members').deleteById(userId);
         return res.status(201).send({ response: numDeleted });
