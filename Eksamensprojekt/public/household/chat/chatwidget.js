@@ -1,6 +1,22 @@
 const chatMessageDOMTemplate = $("#household-chatwidget .household-chatmessage-container");
 
 let socket;
+let token;
+let chatMessages = [];
+
+function saveMessageLocally(message) {
+    chatMessages.push(message);
+    Cookies.set(`chatMessages_${token}`, JSON.stringify(chatMessages));
+}
+
+function loadMessagesLocally() {
+    const chatMessagesLoaded = Cookies.get(`chatMessages_${token}`);
+    if (typeof chatMessagesLoaded !== "undefined") {
+        chatMessages = JSON.parse(chatMessagesLoaded);
+
+        chatMessages.forEach(message => onMemberMessage(message, false));
+    }
+}
 
 async function connectHouseholdChat() {
     const tokenResponse = await fetch("/api/webchat/token");
@@ -12,13 +28,12 @@ async function connectHouseholdChat() {
         return;
     }
 
-    const token = (await tokenResponse.json()).response;
-
+    token = (await tokenResponse.json()).response;
 
     socket = io.connect("127.0.0.1:3000");
     socket.emit("authenticate", token);
 
-    socket.on("memberMessage", message => onMemberMessage(message));
+    socket.on("memberMessage", message => onMemberMessage(message, true));
 
     socket.on("-users", (userArr) => onUserList(userArr));
 
@@ -27,7 +42,12 @@ async function connectHouseholdChat() {
     });
 }
 
-function onMemberMessage(message) {
+function onMemberMessage(message, saveLocally) {
+
+    if (saveLocally) {
+        saveMessageLocally(message);
+    }
+    
     let chatMessageDomElement = chatMessageDOMTemplate.clone();
 
     chatMessageDomElement.find(".household-chatmessage-membername").text(message.memberName);
@@ -49,7 +69,7 @@ function onUserList(userArr) {
         });
     }
 
-    onMemberMessage(message);
+    onMemberMessage(message, true);
 }
 
 function sendMemberMessage() {
@@ -68,6 +88,7 @@ function sendMemberMessage() {
 }
 
 $(document).ready(async () => {
+    loadMessagesLocally();
     await connectHouseholdChat();
 
     if(Cookies.get("householdChatWidgetClosed") == 1)
