@@ -19,9 +19,6 @@ async function populateHouseholdViewData() {
     const householdMemberListElement = $(".household-memberslist");
     const householdMemberDOMTemplate = $(".household-memberslist tbody tr:first");
 
-    console.log(householdMemberDOMTemplate.innerHtml);
-
-
     // populate household-memberslist with DOM-elements
     user.household.members.forEach(member => {
         const householdMemberDOMElement = $(householdMemberDOMTemplate).clone();
@@ -37,7 +34,6 @@ async function populateHouseholdViewData() {
             bntRemoveMember.parent().css("display", "none");
         }
 
-        //console.log("ABC", $(householdMemberDOMTemplate));
         householdMemberListElement.append(householdMemberDOMElement);
     });
 }

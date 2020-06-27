@@ -129,7 +129,6 @@ router.delete("/api/household/member/:id", async (req, res) => {
             return res.status(401).send({ response: "Household owner cannot be deleted."});
         }
         const deleteChatAuth = await ChatAuthentication.query().deleteById(userId);
-
         const unrelate = await User.relatedQuery('household').for(userId).unrelate();
         const numDeleted = await User.query().deleteById(userId);
 
