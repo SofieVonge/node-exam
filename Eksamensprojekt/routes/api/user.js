@@ -76,11 +76,6 @@ router.post("/api/user", async (req, res) => {
 
             // fetch newly created user with graph( household )
             const newUser = await User.query(trx).first().withGraphFetched("household").where({id: newHousehold.owner.id});
-            
-            /*
-            const newUser = newHousehold.owner;
-            newUser.household = newHousehold;
-            */
 
             delete newUser.password;
       

@@ -97,8 +97,6 @@ app.use(summaryService.router);
 const webchatApiRoute = require("./routes/api/webchat.js");
 app.use(webchatApiRoute);
 
-/*const ChatService = require("./routes/service/chatService.js");
-const chatService = new ChatService(app, 3001);*/
 
 const chatService = require("./routes/service/chatService.js");
 chatService.run(io);
@@ -129,16 +127,9 @@ app.get("/", (req, res) => {
 });
 
 
-/**
- * TODO:
- * SETUP
- * app.listen(...) --> ('http').createServer(app).listen(...)
- */
-
-
 // setting up the port and start to listen
 const port = process.env.PORT ? process.env.PORT : 3000;
-/*const server = */
+
 server.listen(port, (error) => {
     if (error)
     {

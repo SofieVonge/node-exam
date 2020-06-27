@@ -9,9 +9,7 @@ function ensureTwoDigitString(num) {
     if (0 <= num && num < 10) {
         return `0${num}`;
     }
-    if(-10 < num && num < 0) {
-        return "-0" + (-1*d).toString();
-    }
+    
     return num.toString();
 }
 
@@ -19,7 +17,6 @@ function ensureTwoDigitString(num) {
  * 
  **/
 Date.prototype.toMysqlFormat = function() {
-    //return this.toISOString().split('T')[0] + ' ' + this.toTimeString().split(' ')[0];
     return this.getFullYear() + "-" + ensureTwoDigitString((1 + this.getUTCMonth())) + "-" + ensureTwoDigitString(this.getDate()) + "T" + ensureTwoDigitString(this.getHours()) + ":" + ensureTwoDigitString(this.getMinutes()) + ":" + ensureTwoDigitString(this.getSeconds()) + "Z";
 };
 

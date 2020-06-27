@@ -46,6 +46,7 @@ async function onAuthenticateMember(socket, token) {
 
         const household = households.get(user.household.id);
 
+        // joining the room with the name of user.household.id
         socket.join(user.household.id);        
 
         const welcomeMessage = { memberName: "** SERVER MESSAGE **", text: `${user.username} joined the chat. users active: ${households.get(user.household.id).members.size}`};
@@ -73,6 +74,7 @@ function onMemberMessage(socket, message) {
     message.memberName = user.username;
 
     pushMessage(socket, message);
+    // emitting a memberMessage to a specific room (user.household.id)
     ioServer.to(user.household.id).emit('memberMessage', message);
 }
 
