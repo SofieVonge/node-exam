@@ -130,7 +130,9 @@ router.delete("/api/household/member/:id", async (req, res) => {
         }
         const deleteChatAuth = await ChatAuthentication.query().deleteById(userId);
 
-        const numDeleted = await household.$relatedQuery('members').deleteById(userId);
+        const unrelate = await User.relatedQuery('household').for(userId).unrelate();
+        const numDeleted = await User.query().deleteById(userId);
+
         return res.status(201).send({ response: numDeleted });
     }
     catch (err) {
