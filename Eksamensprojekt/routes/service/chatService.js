@@ -114,10 +114,10 @@ module.exports = {
                 }
 
                 // if the household has no more active members
-                if (household.members.size == 0) {
+                /*if (household.members.size == 0) {
                     // remove household from households map
                     households.delete(household.id);
-                }
+                }*/
             });
 
             socket.on("authenticate", token => onAuthenticateMember(socket, token));
