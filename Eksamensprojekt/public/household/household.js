@@ -1,3 +1,5 @@
+//const { delete } = require("../../routes/api/household");
+
 async function populateHouseholdViewData() {
     const response = await fetch("/api/user/current");
 
@@ -43,7 +45,7 @@ async function populateHouseholdViewData() {
 }
 
 
-function householdMemberRemove(src)
+async function householdMemberRemove(src)
 {
     const username = $(src).attr("data-username");
 
@@ -54,6 +56,29 @@ function householdMemberRemove(src)
 
     // TODO:
     // fetch api route (del: /api/household/members/{id})
+
+    const response = await fetch("/api/user/current");
+
+    if (response.status != 200) {
+        console.log("error fetching current user")// err
+        return;
+    }
+
+    const user = (await response.json()).response;    
+
+    const deleteResponse = await fetch(`/api/household/member/${user.id}`, {
+        method: "delete",
+        headers: {
+            "Content-Type": "application/json"
+            },
+    });
+
+    const data = await deleteResponse.json();
+
+    if (deleteResponse.status === 201) {
+        window.location.reload();
+        return true;
+    }
 
 
     return true;

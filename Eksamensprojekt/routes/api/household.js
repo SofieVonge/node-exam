@@ -129,7 +129,7 @@ router.delete("/api/household/member/:id", async (req, res) => {
         }
 
         const numDeleted = await household.$relatedQuery('members').deleteById(userId);
-        return res.send({ response: numDeleted });
+        return res.status(201).send({ response: numDeleted });
     }
     catch (err) {
         return res.status(500).send({ response: `Something went wrong with the database: ${ err }`});
