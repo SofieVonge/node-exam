@@ -16,17 +16,18 @@ async function connectHouseholdChat() {
 
 
     socket = io.connect("127.0.0.1:3000");
-    socket.emit('authenticate', token);
+    socket.emit("authenticate", token);
 
-    socket.on('memberMessage', message => onMemberMessage(message));
+    socket.on("memberMessage", message => onMemberMessage(message));
 
-    $('#household-chatwidget-btn-send').on('click', () => {
+    socket.on("-users", (userArr) => onUserList(userArr));
+
+    $("#household-chatwidget-btn-send").on("click", () => {
         sendMemberMessage();
     });
 }
 
 function onMemberMessage(message) {
-    //console.log(message);
     let chatMessageDomElement = chatMessageDOMTemplate.clone();
 
     chatMessageDomElement.find(".household-chatmessage-membername").text(message.memberName);
@@ -36,11 +37,34 @@ function onMemberMessage(message) {
     $("#household-chatwidget #household-chatwidget-chatbox").animate({ scrollTop: $('#household-chatwidget #household-chatwidget-chatbox').prop("scrollHeight")}, 200);
 }
 
+function onUserList(userArr) {
+    
+    const message = { memberName: `** Users online ${userArr.length} **`, text: "" }
+    if (userArr.length > 0) {
+        message.text += userArr[0];
+        userArr.shift();
+
+        userArr.forEach(user => {
+            message.text += `, ${user}`;
+        });
+    }
+
+    onMemberMessage(message);
+}
+
 function sendMemberMessage() {
     const memberName = "placeholder";
     const text = $('#household-chatwidget-chatmessage-text').val();
     $('#household-chatwidget-chatmessage-text').val("");
-    socket.emit("memberMessage", { memberName, text });
+
+    switch (text) {
+        case "-users":
+            socket.emit("users", { memberName, text });
+            break;
+        default:
+            socket.emit("memberMessage", { memberName, text });
+            break;
+    }
 }
 
 $(document).ready(async () => {

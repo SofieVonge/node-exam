@@ -44,18 +44,8 @@ async function onAuthenticateMember(socket, token) {
         addHouseholdIfDoesntExit(user.household);
         addMemberToHousehold(socket, user, user.household.id);
 
-        const household = households.get(user.household.id);
-
         // joining the room with the name of user.household.id
         socket.join(user.household.id);        
-
-        const welcomeMessage = { memberName: "** SERVER MESSAGE **", text: `${user.username} joined the chat. users active: ${households.get(user.household.id).members.size}`};
-
-        if (household.members.get(user.id).connections.size < 2) {
-            ioServer.to(user.household.id).emit("memberMessage", welcomeMessage);
-        } else {
-            socket.emit("memberMessage", welcomeMessage);
-        }
 
         households.get(user.household.id).messages.forEach(message => {
             socket.emit("memberMessage", message);
@@ -68,14 +58,32 @@ async function onAuthenticateMember(socket, token) {
 
 
 function onMemberMessage(socket, message) {
-    // TODO:
-    // broadcast message to the correct household
-    const user = chatClients.get(socket.id).user;
-    message.memberName = user.username;
+    try {
+        // TODO:
+        // broadcast message to the correct household
+        const user = chatClients.get(socket.id).user;
+        message.memberName = user.username;
 
-    pushMessage(socket, message);
-    // emitting a memberMessage to a specific room (user.household.id)
-    ioServer.to(user.household.id).emit('memberMessage', message);
+        pushMessage(socket, message);
+        // emitting a memberMessage to a specific room (user.household.id)
+        ioServer.to(user.household.id).emit("memberMessage", message);
+    } catch (err) {
+        console.log("Error sending MemberMessage.", err);
+    }
+}
+
+function onUserListRequest(socket) {
+    try {
+        const user = chatClients.get(socket.id).user;
+        const household = households.get(user.household.id);
+        const usersOnline = [];
+
+        household.members.forEach((householdUser, key) => { usersOnline.push(householdUser.username); });
+
+        socket.emit("-users", usersOnline);
+    } catch (err) {
+        console.log("Error sending userlist.", err);
+    }
 }
 
 let ioServer;
@@ -91,16 +99,23 @@ module.exports = {
                 const household = households.get(user.household.id);
                 const connections = household.members.get(user.id).connections;
 
+                // leave room
                 socket.leave(household.id);
+                // remove ChatClient from chatClients map
+                // (it's not a user but a connection)
                 chatClients.delete(socket.id);
+                // remove connection from the member in a household
                 connections.delete(socket.id);
- 
+
+                // if the user has no more active connections
                 if (connections.size == 0) {
+                    // remove user from household
                     household.members.delete(user.id);
-                    io.to(household.id).emit('memberMessage', {memberName: "** SERVER MESSAGE **", text: `${user.username} left the chat. users active: ${household.members.size}`});
                 }
 
+                // if the household has no more active members
                 if (household.members.size == 0) {
+                    // remove household from households map
                     households.delete(household.id);
                 }
             });
@@ -109,6 +124,8 @@ module.exports = {
 
             // bind usermessage
             socket.on("memberMessage", message => onMemberMessage(socket, message));
+
+            socket.on("users", () => onUserListRequest(socket));
         });
     }
 }
