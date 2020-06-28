@@ -109,7 +109,7 @@ const CronJob = require("cron").CronJob;
 const job = new CronJob('5 0 20 * *', function() {
     summaryService.createSummaries();
 });
-
+job.start();
 
 
 // making sandwich files to use to SSR
