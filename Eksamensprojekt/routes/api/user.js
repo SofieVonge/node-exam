@@ -8,6 +8,11 @@ const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
 
+/**
+ * Route for fetching information about the user on
+ * current web session. Cookie should be included in
+ * the request header.
+ */
 router.get("/api/user/current", async (req, res) => {
     const { userId, householdId } = req.session;
 
@@ -16,10 +21,13 @@ router.get("/api/user/current", async (req, res) => {
     }
 
     try {
+        // fetch user with household and members
         const user = await User.query().first().withGraphFetched('household.members').where({ id: userId });
 
+        // delete passwords from household members before data is served
         user.household.members.map((member) => delete member.password);
 
+        // delete password from user before data is served
         delete user.password;
 
         return res.send({ response: user });
@@ -28,8 +36,12 @@ router.get("/api/user/current", async (req, res) => {
     }
 });
 
+/**
+ * Route for creating a user
+ */
 router.post("/api/user", async (req, res) => {
 
+    // unpack needed variables from request body
     const { username: username, password, email, household } = req.body;
 
     // missing variables validation
@@ -49,17 +61,23 @@ router.post("/api/user", async (req, res) => {
     }
 
     try {
+        // fetch user with specified username or password from db
         const foundUser = await User.query().where({ username }).orWhere({ email }).first();
+        // if user already exist in db
         if (foundUser) {
             return res.status(400).send({ response: "username or email already exist in the system" });
         }
 
+        // hash password
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         // Start new transaction.
         // All queries in this transaction will be rolled back upon exception
         const newUser = await User.transaction(async trx => {
-            // We query household on the transaction
+            // We query insert household on the transaction
+            // with relation to also beforehand inserted owner.
+            // This owner object (user) is afterwards refered
+            // to as a member.
             const newHousehold = await Household.query(trx).insertGraphAndFetch(
             {
                 name: household,
@@ -92,7 +110,14 @@ router.post("/api/user", async (req, res) => {
 });
 
 
-
+/**
+ * Email validation.
+ * Author: rnevius (StackOverflow)
+ * https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+ * 
+ * @param {string} email
+ * @returns boolean indicating if the email is valid.
+ */
 function validateEmail(email) {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
