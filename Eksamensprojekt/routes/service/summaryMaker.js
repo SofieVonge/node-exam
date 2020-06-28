@@ -14,19 +14,29 @@ function ensureTwoDigitString(num) {
 }
 
 /**
- * 
- **/
+ * Returns date as Mysql format
+ */
+// new function definition to Date Object.
 Date.prototype.toMysqlFormat = function() {
     return this.getFullYear() + "-" + ensureTwoDigitString((1 + this.getUTCMonth())) + "-" + ensureTwoDigitString(this.getDate()) + "T" + ensureTwoDigitString(this.getHours()) + ":" + ensureTwoDigitString(this.getMinutes()) + ":" + ensureTwoDigitString(this.getSeconds()) + "Z";
 };
 
 
-
+/**
+ * Test of summary generation
+ */
 router.get("/testRoute", async (req, res) => {
     //return res.send(await fetchHouseholdsWithMissingSummary(7, 2020));
     return res.send(await createSummaries());
 });
 
+/**
+ * Fetch households missing summary for the
+ * specified month and year.
+ * 
+ * @param {integer} month 
+ * @param {integer} year 
+ */
 async function fetchHouseholdsWithMissingSummary(month, year) {
     const createdAtFrom = new Date(year, month, 1); // start of month
     const createdAtTo = new Date(year, month + 1, 0);// end of month
@@ -37,7 +47,14 @@ async function fetchHouseholdsWithMissingSummary(month, year) {
     return households;
 }
 
-
+/**
+ * Create summary for a household for the
+ * given month and year.
+ * 
+ * @param {*} householdId 
+ * @param {*} month 
+ * @param {*} year 
+ */
 async function createSummary(householdId, month, year) {
     const expenses = await Expense.query().where({nextPayment: (month + 1), householdId});
     let total = 0;
@@ -75,6 +92,10 @@ async function createSummary(householdId, month, year) {
     return summary;
 }
 
+/**
+ * Create summaries for all households for
+ * the next month.
+ */
 const createSummaries = async function () {
     let summaries = [];
     const now = new Date();
