@@ -16,7 +16,7 @@ async function connectHouseholdChat() {
     socket = io.connect("127.0.0.1:3000");
     socket.emit("authenticate", token);
 
-    socket.on("memberMessage", message => onMemberMessage(message, true));
+    socket.on("memberMessage", message => onMemberMessage(message));
 
     socket.on("-users", (userArr) => onUserList(userArr));
 
@@ -25,7 +25,7 @@ async function connectHouseholdChat() {
     });
 }
 
-function onMemberMessage(message, saveLocally) {    
+function onMemberMessage(message) {    
     let chatMessageDomElement = chatMessageDOMTemplate.clone();
 
     chatMessageDomElement.find(".household-chatmessage-membername").text(message.memberName);
@@ -47,7 +47,7 @@ function onUserList(userArr) {
         });
     }
 
-    onMemberMessage(message, true);
+    onMemberMessage(message);
 }
 
 function sendMemberMessage() {
