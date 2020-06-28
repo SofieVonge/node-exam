@@ -125,7 +125,7 @@ module.exports = {
             // bind usermessage
             socket.on("memberMessage", message => onMemberMessage(socket, message));
 
-            socket.on("users", () => onUserListRequest(socket));
+            socket.on("-users", () => onUserListRequest(socket));
         });
     }
 }

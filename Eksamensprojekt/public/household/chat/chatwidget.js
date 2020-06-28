@@ -57,7 +57,7 @@ function sendMemberMessage() {
 
     switch (text) {
         case "-users":
-            socket.emit("users", { memberName, text });
+            socket.emit("-users", { memberName, text });
             break;
         default:
             socket.emit("memberMessage", { memberName, text });
