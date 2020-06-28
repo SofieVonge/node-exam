@@ -37,7 +37,7 @@ function onMemberMessage(message) {
 
 function onUserList(userArr) {
     
-    const message = { memberName: `** Users online ${userArr.length} **`, text: "" }
+    const message = { memberName: `** Users online ${userArr.length} **`, text: "" };
     if (userArr.length > 0) {
         message.text += userArr[0];
         userArr.shift();
@@ -68,23 +68,19 @@ function sendMemberMessage() {
 $(document).ready(async () => {
     await connectHouseholdChat();
 
-    if(Cookies.get("householdChatWidgetClosed") == 1)
+    const chatClosedCookie = Cookies.get("householdChatWidgetClosed");
+    if(typeof chatClosedCookie !== "undefined" && chatClosedCookie == 0)
     {
-        $("#household-chatwidget").addClass("closed");
-    } else {
         $("#household-chatwidget").removeClass("closed");
-    }
-
-    
+    } else {
+        $("#household-chatwidget").addClass("closed");
+    }    
 
     $("#webchat-widget-toggle-display").on("click", () => {
         $("#household-chatwidget").toggleClass("closed");
         
-        if(Cookies.get("householdChatWidgetClosed") == 0)
-        {
-            Cookies.set("householdChatWidgetClosed", 1);
-        } else {
-            Cookies.set("householdChatWidgetClosed", 0);
-        }
+        const chatClosed = $("#household-chatwidget").hasClass("closed");
+
+        Cookies.set("householdChatWidgetClosed", chatClosed ? 1 : 0);
     });
 });
