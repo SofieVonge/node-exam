@@ -17,7 +17,10 @@ exports.seed = function(knex)
           return knex("households").del()
           .then(function ()
           {
-            return knex("users").del()
+            return knex("chat_authentications").del()
+            .then(function () {
+              return knex("users").del()
+            });
           });
         });
       });
